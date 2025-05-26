@@ -1,71 +1,55 @@
-train: dataset/images/train
-val: dataset/images/val
-nc: 67 # nr of classes, in our case there are 67
+train: dataset/images/train          # <-- keep your own paths
+val:   dataset/images/val            # <—
+
+nc: 49
+
 names:
-  - shut-off_valve_on
-  - shut-off_valve_off
-  - pump_on_up
-  - pump_on_right
-  - pump_on_left
-  - pump_on_down
-  - pump_off_up
-  - pump_off_right
-  - pump_off_left
-  - pump_off_down
-  - metering_device
-  - frequency_inverter_on
-  - frequency_inverter_off
-  - digital_volume_sensor_on
-  - digital_volume_sensor_off
-  - digital_temperature_sensor
-  - digital_relative_humidity_sensor
-  - digital_differential_pressure_sensor
-  - digital_absolute_humidity_sensor
-  - differential_pressure_sensor
+  - 2-way-control_valve
+  - 3-way-control_valve
   - analog_pressure_sensor
   - analogue_relative_humidity_sensor
-  - 3-way-control_valve
-  - 2-way-control_valve
   - chiller
   - chiller_off
   - chiller_on
-  - combined_coarse_fine_filter_right
-  - constant_volume_flow_controller_left
-  - constant_volume_flow_controller_right
+  - combined_coarse_fine_filter
+  - constant_volume_flow_controller
   - consumer
   - cooling_coil
   - damper_off
+  - differential_pressure_sensor
+  - digital_absolute_humidity_sensor
+  - digital_differential_pressure_sensor
+  - digital_relative_humidity_sensor
+  - digital_temperature_sensor
+  - digital_volume_sensor_off
+  - digital_volume_sensor_on
   - discharge_well
-  - electical_heater
+  - electical_heater            # ← typo kept to match label files
   - electrical_air_damper_on
   - electrical_hot_water_storage_tank
-  - exhaust_air_combined_fine_coarse_filter_left
-  - fan_on_left
-  - fan_on_left_1
-  - fan_on_right
-  - fan_on_right_1
-  - fan_on_right_2
-  - fan_right
-  - filter_left
-  - filter_right
+  - fan_on
+  - filter
   - fine_filter
+  - frequency_inverter_off
+  - frequency_inverter_on
   - heat_exchanger
   - heat_exchanger_ventilation_system
   - heating_coil
-  - inlet_vane_controlled_fan_off_left
-  - inlet_vane_controlled_fan_off_right
-  - inlet_vane_controlled_fan_on_left_1
-  - inlet_vane_controlled_fan_on_right_1
+  - inlet_vane_controlled_fan_off
+  - inlet_vane_controlled_fan_on
+  - metering_device
   - pressurization_system
+  - pump_off
+  - pump_on
   - rooftop_chiller_unit
   - room_switch_off
   - room_switch_on
   - rotary_heat_exchanger
-  - steam_humidifer
+  - shut-off_valve_off
+  - shut-off_valve_on
+  - steam_humidifer            # ← typo kept to match label files
   - steam_humidifier_off
   - steam_humidifier_on
-  - variable_volume_flow_controller_left
-  - variable_volume_flow_controller_right
+  - variable_volume_flow_controller
   - vertical_heat_exchanger_heating_cooling
   - water_storage_tank
-  - water_storage_tank_1
