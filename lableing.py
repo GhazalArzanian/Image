@@ -1,17 +1,14 @@
 #!/usr/bin/env python3
 """
-Synthetic dataset generator for HVAC/BMS symbol detection (YOLO-format).
+Synthetic dataset generator for HVAC/BMS symbol detection (YOLO‑format).
 
-Revision A (2025-05-26)
+Revision B (2025‑06‑23)
 -----------------------
-* **Equalised symbol sizes** – every symbol is rescaled so its pixel area is
-  close to the dataset-wide median (clamped between ×0.5 and ×2.0).  This keeps
-  tiny icons from being invisible and huge ones from dominating the image.
-* Small-component heuristic removed – universal scaling makes it redundant.
-* Still places largest (post-scaling) symbols first and uses
-  `MAX_PLACEMENT_TRIES = 300`.
+* **Removed automatic symbol scaling** – components now retain their
+  original pixel dimensions.
+* Minor cleanup of now‑unused constants.
 
-Edit constants in *section 5* as needed.
+Edit constants in *section 5* as needed.
 """
 
 import cv2
@@ -156,10 +153,6 @@ IMG_W, IMG_H = 1700, 800
 BACKGROUND_RGB = (230, 178, 172)
 MAX_PLACEMENT_TRIES = 300
 
-# target area for scaling (median) will be computed automatically
-SCALE_CLAMP_MIN = 0.5
-SCALE_CLAMP_MAX = 2.0
-
 # ---------------------------------------------------------------------------
 # 5. Helper functions
 # ---------------------------------------------------------------------------
@@ -199,31 +192,18 @@ def place_alpha(dst, src, tl):
         dst[y:y+h, x:x+w] = src[:, :, :3]
 
 # ---------------------------------------------------------------------------
-# 6. Load resources and compute scale factors
+# 6. Load resources (no scaling – symbols keep original size)
 # ---------------------------------------------------------------------------
 
 print("Loading symbols …")
-raw_symbols = load_images(GROUND_TRUTH_DIR)
-if not raw_symbols:
+SYMBOLS = load_images(GROUND_TRUTH_DIR)
+if not SYMBOLS:
     raise SystemExit("No symbols found – check GROUND_TRUTH_DIR path")
 
-areas = np.array([img.shape[0] * img.shape[1] for _, img in raw_symbols])
-median_area = float(np.median(areas))
-print(f"  {len(raw_symbols)} symbols loaded (median area ≈ {median_area:.0f} px²)")
-
-# apply scaling so each symbol area ≈ median_area (within clamp limits)
-SYMBOLS = []
-for fname, img in raw_symbols:
-    h0, w0 = img.shape[:2]
-    area = h0 * w0
-    scale = np.sqrt(median_area / area)
-    scale = max(min(scale, SCALE_CLAMP_MAX), SCALE_CLAMP_MIN)
-    if abs(scale - 1.0) > 1e-3:
-        img = cv2.resize(img, (int(w0 * scale), int(h0 * scale)), cv2.INTER_LINEAR)
-    SYMBOLS.append((fname, img))
-
-# sort by (post-scaling) area descending so big ones placed first
+# sort by area descending so big ones placed first
 SYMBOLS.sort(key=lambda it: it[1].shape[0] * it[1].shape[1], reverse=True)
+
+print(f"  {len(SYMBOLS)} symbols loaded")
 
 print("Loading context images …")
 CONTEXTS = [img for _, img in load_images(CONTEXT_DIR)]
